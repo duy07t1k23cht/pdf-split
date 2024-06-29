@@ -1,12 +1,8 @@
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.lib.pagesizes import portrait, landscape, A4
 
-import time
-
 
 def split_pdf(input_file, offset: int = 0, landscape_mode: bool = False):
-    # time.sleep(3)
-    # raise ValueError
     input1 = PdfReader(input_file)
     output = PdfWriter()
 
@@ -23,7 +19,7 @@ def split_pdf(input_file, offset: int = 0, landscape_mode: bool = False):
 
     new_page_height = original_width * (a4_height / a4_width)
 
-    print(original_width, new_page_height)
+    print("Page size:", original_width, new_page_height)
 
     i = 0
 
