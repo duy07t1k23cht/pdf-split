@@ -13,9 +13,12 @@ load_dotenv()
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_REGION = "ap-southeast-1"
-S3_BUCKET_NAME = "duynm-pdf-split"
+S3_BUCKET_NAME = "duynm-pdf-split-for-x"
 
-s3_client = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=AWS_REGION)
+if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+    s3_client = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=AWS_REGION)
+else:
+    s3_client = None
 
 
 def main():
@@ -35,7 +38,8 @@ def main():
                 pdf_bytes = uploaded_file.read()
                 output_pdf = BytesIO()
                 try:
-                    s3_client.upload_fileobj(BytesIO(pdf_bytes), S3_BUCKET_NAME, uploaded_file.name)
+                    if s3_client is not None:
+                        s3_client.upload_fileobj(BytesIO(pdf_bytes), S3_BUCKET_NAME, uploaded_file.name)
                     print(">" * 100, "Splitting:", uploaded_file.name)
                     output = split_pdf(BytesIO(pdf_bytes))
                 except Exception as e:
