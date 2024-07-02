@@ -11,5 +11,4 @@ cd /home/ec2-user
 
 git clone https://github.com/duy07t1k23cht/pdf-split.git
 
-cd pdf-split
-pip install -r requirements.txt
+echo "cd pdf-split && pip install -r requirements.txt && sh run.sh" > run.sh
